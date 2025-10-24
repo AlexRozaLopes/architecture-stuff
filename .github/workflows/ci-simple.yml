@@ -10,9 +10,10 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu:latest
+    runs-on: ubuntu-latest
+
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v5
 
       - name: Set up JDK
@@ -32,10 +33,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Docker image
+      - name: Build and Push Docker image
         run: |
-          docker build -t ghcr.io/${{DOCKER_USER,,}}/arch-stuff:latest docker/Dockerfile.
-
-      - name: Push Docker image
-        run: |
-          docker push ghcr.io/${{DOCKER_USER,,}}/arch-stuff:latest
+          DOCKER_USER_LOWER=${DOCKER_USER,,}
+          echo "Docker user lower: $DOCKER_USER_LOWER"
+          
+          docker build -t ghcr.io/$DOCKER_USER_LOWER/arch-stuff:latest -f docker/Dockerfile .
+          
+          docker push ghcr.io/$DOCKER_USER_LOWER/arch-stuff:latest
