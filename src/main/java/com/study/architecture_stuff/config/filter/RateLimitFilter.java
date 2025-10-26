@@ -6,14 +6,12 @@ import io.github.bucket4j.Bucket;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 @Component
 @AllArgsConstructor
-@Log4j2
 public class RateLimitFilter implements Filter {
 
     private final Bucket bucket;
@@ -22,8 +20,6 @@ public class RateLimitFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-
-        log.info("CALL FILTER RATE LIMIT");
 
         if (bucket.tryConsume(1)) {
             filterChain.doFilter(servletRequest, servletResponse);
