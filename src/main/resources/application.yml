@@ -2,6 +2,12 @@ spring:
   application:
     name: architecture-stuff
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
   data:
     redis:
       host: localhost
